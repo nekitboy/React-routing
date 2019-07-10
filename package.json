@@ -1,0 +1,16 @@
+{
+  "name": "react-routing",
+  "version": "0.0.0",
+  "description": "Small react routing application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nekitboy@yandex.ru",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router": "^5.0.1"
+  }
+}
