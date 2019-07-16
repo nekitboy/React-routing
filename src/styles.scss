@@ -1,0 +1,65 @@
+@import "./variables";
+
+body {
+  padding: 0;
+  margin: 0;
+
+  width: 100vw;
+  min-width: $breakpoint-xs;
+  overflow-x: hidden;
+
+  background: #fff;
+
+  line-height: 1.7;
+  color: gray;
+  font-weight: 300;
+  font-size: 1.1rem;
+
+  font-family: "Muli", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  @media (max-width: $breakpoint-xs) {
+    width: $breakpoint-xs;
+    overflow-x: auto;
+  }
+}
+
+:global(#app) {
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #000;
+  color: #fff;
+}
+
+:global(.container) {
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (min-width: $breakpoint-sm) {
+    max-width: 540px;
+  }
+  @media (min-width: $breakpoint-md) {
+    max-width: 720px;
+  }
+  @media (min-width: $breakpoint-lg) {
+    max-width: 960px;
+  }
+  @media (min-width: $breakpoint-xl) {
+    max-width: 1140px;
+  }
+}
+
+// Normalization
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -5,9 +5,69 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
     <title>Document</title>
+
+    <style>
+        @keyframes loader-rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes loader-dash {
+            0% {
+                stroke-dasharray: 1, 200;
+                stroke-dashoffset: 0;
+            }
+            50% {
+                stroke-dasharray: 89, 200;
+                stroke-dashoffset: -35px;
+            }
+            100% {
+                stroke-dasharray: 89, 200;
+                stroke-dashoffset: -136px;
+            }
+        }
+        noscript {
+            position: fixed;
+            z-index: 1000000;
+        }
+    </style>
 </head>
 <body>
-    <div id="app"></div>
+<noscript>
+    JavaScript is required. Please, enable javascript or upgrade your browser.
+</noscript>
+<div id="app"></div>
+<div id="loader" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #fff;
+    z-index: 10000;
+
+    transition: opacity .3s ease-out;
+">
+    <svg width="48px" height="48px" style="
+        animation: loader-rotate 2s linear infinite;
+        position: absolute;
+        left: calc(50% - 24px);
+        top: calc(50% - 24px);
+        display: block;
+        transform: rotate(0deg);
+    ">
+        <circle cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+        <circle style="
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+            animation: loader-dash 1.5s ease-in-out infinite;
+            stroke-linecap: round;
+        " cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#51be78"/>
+    </svg>
+</div>
 </body>
 </html>

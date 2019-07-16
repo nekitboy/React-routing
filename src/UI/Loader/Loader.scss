@@ -1,0 +1,102 @@
+.loader {
+  position: fixed;
+  width: 96px;
+  height: 96px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.24);
+  border-radius: 16px;
+  z-index: 2000;
+
+  animation-name: loaderShow;
+  animation-duration: .4s;
+  animation-timing-function: ease-in;
+
+}
+
+.loader.fullscreen {
+  padding: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  background-color: #fff;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.loader.single {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  transform: none;
+  left: 0;
+  top: 0;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.24);
+}
+
+.loader.hide {
+  animation-name: loaderHide;
+  animation-fill-mode: forwards;
+  animation-duration: .2s;
+}
+
+.loader .circular {
+  animation: loader-rotate 2s linear infinite;
+  position: absolute;
+  left: calc(50% - 24px);
+  top: calc(50% - 24px);
+  display: block;
+  transform: rotate(0deg);
+}
+
+.loader .path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: loader-dash 1.5s ease-in-out infinite;
+  stroke-linecap: round;
+}
+
+@keyframes loader-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -136px;
+  }
+}
+
+@keyframes loaderShow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes loaderHide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

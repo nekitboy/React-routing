@@ -11,6 +11,7 @@ module.exports = {
     'Atomics': 'readonly',
     'SharedArrayBuffer': 'readonly'
   },
+  "parser": "babel-eslint",
   'parserOptions': {
     'ecmaFeatures': {
       "experimentalObjectRestSpread": true,
@@ -23,7 +24,10 @@ module.exports = {
     'react'
   ],
   'rules': {
+    "indent": ["error", 2, {'ignoredNodes': ['JSXElement', 'JSXAttribute']}],
     'react/jsx-uses-react': 'error',
-    'react/jsx-uses-vars': 'error'
+    'react/jsx-uses-vars': 'error',
+    'react/jsx-indent-props': ['error', 2],
+    'react/jsx-first-prop-new-line': ['error', 'multiline']
   }
 }
