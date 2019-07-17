@@ -21,12 +21,13 @@ body {
   @media (max-width: $breakpoint-xs) {
     width: $breakpoint-xs;
     overflow-x: auto;
+
+    :global(#app) {
+      overflow-x: hidden;
+    }
   }
 }
 
-:global(#app) {
-  overflow-x: hidden;
-}
 
 ::selection {
   background: #000;

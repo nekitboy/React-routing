@@ -1,16 +1,12 @@
 import React from 'react'
-import cls from './Header.scss'
-// eslint-disable-next-line no-unused-vars
-import { mainMenuLinks } from '../../../data/navigation'
 import HeaderActions from './HeaderActions/HeaderActions'
+import MainHeader from './MainHeader/MainHeader'
 
 const Header = () => {
   return (
     <React.Fragment>
       <HeaderActions/>
-      <header className={cls.header}>
-
-      </header>
+      <MainHeader/>
     </React.Fragment>
   )
 }

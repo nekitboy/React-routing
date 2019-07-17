@@ -2,7 +2,7 @@ require('dotenv').config({ path: __dirname })
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const outputDirectory = 'dist'
+const outputDirectory = 'public'
 
 const createStyleLoader = (useModules = false, isDev = true) => {
   const loaders = []

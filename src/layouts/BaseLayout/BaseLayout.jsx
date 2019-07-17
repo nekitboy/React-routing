@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import Header from './Header/Header'
-// import cls from './BaseLayout.scss'
+import './BaseLayout.scss'
 
 const BaseLayout = (props) => {
   return (

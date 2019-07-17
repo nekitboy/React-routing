@@ -1,0 +1,39 @@
+@import "../../../../../variables";
+
+.socials {
+  margin-left: auto;
+  text-align: right;
+}
+
+.socialBtn {
+  background-color: $theme-color-1;
+  color: #fff;
+
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+
+  margin-left: 5px;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+  
+  transition: all .3s ease;
+  
+  &:hover {
+    background-color: #000;
+  }
+}
+
+.menuBtn {
+  @media (min-width: $breakpoint-lg) {
+    display: none;
+  }
+}
+
+@media (max-width: 409.98px) {
+  .socials {
+    width: 100px;
+  }
+}

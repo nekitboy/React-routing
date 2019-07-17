@@ -1,7 +1,16 @@
 export const mainMenuLinks = [
-  { href: '/', text: 'Home' },
-  { href: '/news', text: 'News' },
-  { href: '/profile', text: 'Profile' }
+  { link: '/', text: 'Home' },
+  {
+    link: '/about',
+    text: 'About Us',
+    items: [
+      { link: '/teachers', text: 'Teachers' },
+      { link: '/school', text: 'Our School' }
+    ]
+  },
+  { link: '/admissions', text: 'Admissions' },
+  { link: '/courses', text: 'Courses' },
+  { link: '/contact', text: 'Contact' }
 ]
 
 export const footerMenuLinks = mainMenuLinks
