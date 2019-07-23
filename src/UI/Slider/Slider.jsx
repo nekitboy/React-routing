@@ -39,7 +39,7 @@ export default class Slider extends React.Component {
   }
 
   getSlideNumber = (frameNumber) => {
-    return parseInt(frameNumber / this.props.itemsOnPage)
+    return parseInt(frameNumber / this.getItemsOnPage())
   }
 
   getFrameWidth = () => {
