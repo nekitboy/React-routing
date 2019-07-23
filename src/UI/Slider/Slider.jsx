@@ -16,7 +16,7 @@ export default class Slider extends React.Component {
     super(props)
 
     this.state = {
-      curFrame: (props.startSlide || 0) * this.getItemsOnPage(),
+      curFrame: 0,
       frames: props.items.map(item => ({ item, offset: '0' })),
       transition: true,
       offset: 0
@@ -25,7 +25,13 @@ export default class Slider extends React.Component {
       this.state.frames.push({ item: <div key={'emptyFrame' + this.state.frames.length}/>, offset: 0 })
     }
 
+    this.setFrame(this.state.curFrame)
+
     window.setFrame = this.setFrame
+  }
+
+  componentDidMount () {
+    this.props.startSlide && this.setFrame(this.props.startSlide)
   }
 
   sliderElem = null
