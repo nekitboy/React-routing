@@ -137,11 +137,11 @@ export default class Slider extends React.Component {
   }
 
   nextFrame = async () => {
-    this.setFrame((this.state.curFrame + 1) % this.state.frames.length)
+    this.setFrame((this.state.curFrame + 1) % this.state.frames.length, 'right')
   }
 
   prevFrame = async () => {
-    this.setFrame((this.state.frames.length + this.state.curFrame - 1) % this.state.frames.length)
+    this.setFrame((this.state.frames.length + this.state.curFrame - 1) % this.state.frames.length, 'left')
   }
 
   createDots = () => {
