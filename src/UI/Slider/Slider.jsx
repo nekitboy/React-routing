@@ -77,7 +77,7 @@ export default class Slider extends React.Component {
       if (this.state.curFrame > frameIndex) {
         const distToLeft = this.state.curFrame - frameIndex
         const distToRight = frameIndex + this.state.frames.length - this.state.curFrame
-        direction = distToLeft < distToRight ? 'left' : 'right'
+        direction = distToLeft <= distToRight ? 'left' : 'right'
       } else {
         const distToLeft = this.state.curFrame + this.state.frames.length - frameIndex
         const distToRight = frameIndex - this.state.curFrame
@@ -138,57 +138,6 @@ export default class Slider extends React.Component {
 
   nextFrame = async () => {
     this.setFrame((this.state.curFrame + 1) % this.state.frames.length)
-    // let postprocess = () => {
-    // }
-    //
-    // await this.setState((state) => {
-    //   // Next frame is requires cycle transfer frames from beginning
-    //   if (state.curFrame >= state.frames.length - this.getItemsOnPage() && state.curFrame !== state.frames.length - 1) {
-    //     const transferFrameIndex = (state.curFrame + this.getItemsOnPage()) % state.frames.length
-    //     const frames = state.frames
-    //
-    //     frames[transferFrameIndex].offset = frames.length * 100
-    //
-    //     return {
-    //       curFrame: state.curFrame + 1,
-    //       offset: state.offset - this.getFrameWidth(),
-    //       frames: frames
-    //     }
-    //   } else if (state.curFrame === state.frames.length - 1) {
-    //     const frames = state.frames
-    //     frames[frames.length - 1].offset = (-frames.length) * 100
-    //     for (let i = 0; i < this.getItemsOnPage() - 1; i++) {
-    //       frames[i].offset = 0
-    //     }
-    //
-    //     postprocess = async () => {
-    //       await this.requestAnimationFrameAsync()
-    //       this.setState((state) => {
-    //         const frames = state.frames
-    //         frames[frames.length - 1].offset = 0
-    //         return {
-    //           transition: true,
-    //           offset: 0,
-    //           frames: frames,
-    //           curSlide: 0,
-    //           curFrame: 0
-    //         }
-    //       })
-    //     }
-    //
-    //     return {
-    //       transition: false,
-    //       offset: this.getFrameWidth(),
-    //       frames: frames
-    //     }
-    //   } else {
-    //     return {
-    //       offset: state.offset - this.getFrameWidth(),
-    //       curFrame: state.curFrame + 1
-    //     }
-    //   }
-    // })
-    // postprocess()
   }
 
   prevFrame = async () => {
