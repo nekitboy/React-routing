@@ -18,7 +18,7 @@ export default class Slider extends React.Component {
     this.state = {
       curFrame: 0,
       frames: props.items.map(item => ({ item, offset: '0' })),
-      transition: true,
+      transition: props.firstTransition,
       offset: 0
     }
     while (this.state.frames.length < this.getItemsOnPage()) {
@@ -30,8 +30,10 @@ export default class Slider extends React.Component {
     window.setFrame = this.setFrame
   }
 
-  componentDidMount () {
+  async componentDidMount () {
     this.props.startSlide && this.setFrame(this.props.startSlide)
+    await this.requestAnimationFrameAsync()
+    this.setState({ transition: true })
   }
 
   sliderElem = null
