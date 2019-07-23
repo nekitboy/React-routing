@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './styles.scss'
 import Layout from './layouts/BaseLayout/BaseLayout'
+import Home from './pages/Home/Home'
 
 const App = () => {
   return (
@@ -9,7 +10,7 @@ const App = () => {
       <Layout>
         <Switch>
           <Route exact path='/'>
-            Home
+            <Home/>
           </Route>
           <Route exact path='/login'>
             Login

@@ -1,0 +1,73 @@
+.Slider {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.slideWrap {
+  display: flex;
+  flex-wrap: nowrap;
+
+  > * {
+    flex-shrink: 0;
+    flex-grow: 0;
+    overflow: hidden;
+  }
+}
+
+.Navigation {
+  cursor: pointer;
+
+  div {
+    position: absolute;
+    background-color: #fff;
+    width: 40px;
+    height: 40px;
+
+    top: calc(50% - 20px);
+    left: 0;
+
+    text-align: center;
+
+    i {
+      line-height: 40px;
+      font-size: 1.5rem;
+    }
+
+    &:last-child {
+      left: unset;
+      right: 0;
+    }
+  }
+}
+
+.dots {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  bottom: 30px;
+  transform: translate(-50%);
+
+  span {
+    cursor: pointer;
+    line-height: 14px;
+    display: inline-block;
+
+    &:before {
+      content: '';
+      border-radius: 50%;
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin: 2px 5px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    &.active {
+      &:before {
+        background-color: #fff;
+      }
+    }
+  }
+
+}

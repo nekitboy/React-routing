@@ -1,0 +1,32 @@
+.Slide {
+  min-height: 900px;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  span {
+    font-size: 7rem;
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+
+    line-height: 1.2;
+    display: flex;
+    position: relative;
+    align-items: center;
+    height: 100%;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #222;
+    opacity: .7;
+  }
+}

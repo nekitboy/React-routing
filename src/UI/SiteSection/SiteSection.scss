@@ -1,0 +1,26 @@
+@import "../../variables";
+
+.section {
+  padding: 2.5em 0;
+
+  @media (min-width: $breakpoint-md) {
+    padding: 5em 0;
+  }
+}
+
+.title {
+  display: inline-block;
+
+  color: #000;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.2;
+
+  margin: 0 0 3rem;
+
+  border-bottom: 4px solid $theme-color-1;
+}
+
+.center {
+  text-align: center;
+}

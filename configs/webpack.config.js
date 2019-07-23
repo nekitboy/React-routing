@@ -1,6 +1,7 @@
 require('dotenv').config({ path: __dirname })
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const outputDirectory = 'public'
 
@@ -75,7 +76,7 @@ module.exports = (env, argv) => {
           ]
         },
         {
-          test: /\.(jpg|png|gif|svg|pdf|ico|ttf|eot|woff)$/,
+          test: /\.(jpg|png|gif|svg|pdf|ico|ttf|eot|woff|woff2)$/,
           use: [
             {
               loader: 'file-loader',
@@ -99,7 +100,8 @@ module.exports = (env, argv) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: './src/index.html'
-      })
+      }),
+      new CleanWebpackPlugin()
     ]
   }
 }
