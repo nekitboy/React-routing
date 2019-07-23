@@ -42,7 +42,6 @@ export default class MainHeader extends React.Component {
       this.headerElem.style.paddingBottom = `${newPadding}px`
     }, 20)
     this.headerElem.addEventListener('sticked', () => {
-      console.log('sticked')
       this.headerElem.style.boxShadow = '4px 0 20px -5px rgba(0, 0, 0, 0.2)'
       document.addEventListener('scroll', paddingHandler)
     })
