@@ -11,5 +11,5 @@ const items = [
 ]
 
 export default () => (
-  <Slider items={items} withDots startSlide={0} />
+  <Slider items={items} withDots startSlide={0} slidesDelay={3000} />
 )

@@ -10,6 +10,7 @@ export default class Slider extends React.Component {
    * @param className {string}
    * @param startSlide {Number | null}
    * @param withDots {bool}
+   * @param slidesDelay {msc}
    */
 
   constructor (props) {
@@ -127,6 +128,16 @@ export default class Slider extends React.Component {
     this.props.startSlide && this.setFrame(this.props.startSlide)
     await this.requestAnimationFrameAsync()
     this.setState({ transition: true })
+
+    if (this.props.slidesDelay) {
+      this.slidesInterval = setInterval(this.nextFrame, this.props.slidesDelay)
+    }
+  }
+
+  componentWillUnmount () {
+    if (this.slidesInterval) {
+      clearInterval(this.slidesInterval)
+    }
   }
 
   sliderElem = null
