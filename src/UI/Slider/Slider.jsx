@@ -35,7 +35,6 @@ export default class Slider extends React.Component {
     if (this.slidesInterval) {
       clearInterval(this.slidesInterval)
     }
-    console.log(downEvent)
 
     downEvent.persist()
     let moveEventType = 'mousemove'
@@ -65,17 +64,25 @@ export default class Slider extends React.Component {
       })
 
       if (offsetPx < 0 && !nextFrame) {
-        if ( // If curFrame is l  ast and need to transfer first frame
-          this.state.curFrame === this.state.frames.length - 1 &&
-          this.state.frames[0].offset !== this.state.frames.length * 100
+        if ( // If curFrame is on last page and need to transfer first frame
+          this.state.curFrame + this.getItemsOnPage() >= this.state.frames.length &&
+          this.state.frames[this.getItemsOnPage() - this.state.frames.length + this.state.curFrame].offset !==
+          this.state.frames.length * 100
         ) {
-          this._transferFrames(this.state.frames.slice(0, 1), true)
+          console.log('Transfer right')
+          this._transferFrames(this.state.frames.slice(
+            this.getItemsOnPage() - this.state.frames.length + this.state.curFrame,
+            this.getItemsOnPage() - this.state.frames.length + this.state.curFrame + 1
+          ), true)
           this.setState({})
         } else if ( // If curFrame is not last and need to reset next frame
-          this.state.curFrame !== this.state.frames.length - 1 &&
-          this.state.frames[this.state.curFrame + 1].offset !== null
+          this.state.curFrame + this.getItemsOnPage() < this.state.frames.length &&
+          this.state.frames[this.state.curFrame + this.getItemsOnPage()].offset !== null
         ) {
-          this._resetFrames(this.state.frames.slice(this.state.curFrame + 1, this.state.curFrame + 2))
+          this._resetFrames(this.state.frames.slice(
+            this.state.curFrame + this.getItemsOnPage(),
+            this.state.curFrame + 1 + this.getItemsOnPage())
+          )
           this.setState({})
         }
       } else if (offsetPx > 0 && !prevFrame) {
@@ -121,16 +128,12 @@ export default class Slider extends React.Component {
       document.body.classList.remove(cls.grabbing)
 
       if (this.props.slidesDelay) {
-        console.log(this.props.slidesDelay)
         this.slidesInterval = setInterval(this.nextFrame, this.props.slidesDelay)
-        console.log(this.slidesInterval)
       }
 
       this.setState({
         transition: true
       })
-
-      console.log(upEvent)
 
       if ((upEvent.clientX || upEvent.changedTouches[0].clientX) - prevX > 50) {
         this.prevFrame()
