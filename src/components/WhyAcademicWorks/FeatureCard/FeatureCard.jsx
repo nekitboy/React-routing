@@ -4,7 +4,7 @@ import FlatIcon from '../../../UI/FlatIcon/FlatIcon'
 import LinkButton from '../../../UI/Button/LinkButton'
 
 export default ({ icon, title, text, link }) => (
-  <div>
+  <div className={cls.FeatureCard}>
     <div className={cls.icon}>
       <FlatIcon icon={icon}/>
     </div>

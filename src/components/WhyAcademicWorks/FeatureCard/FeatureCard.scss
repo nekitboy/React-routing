@@ -1,0 +1,79 @@
+@import "../../../variables";
+
+.FeatureCard {
+  border: 1px solid #dee2e6;
+  position: relative;
+
+  text-align: center;
+
+  margin-top: 4rem;
+
+  padding: 50px 20px 20px 20px;
+
+  h3 {
+    font-size: 1.3rem;
+    color: #000;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    margin-bottom: 1rem;
+  }
+}
+
+.icon {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+
+  width: 96px;
+  height: 56px;
+  line-height: 56px;
+  font-size: 3rem;
+  text-align: center;
+  color: #fff;
+
+  background-color: $theme-color-1;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0, -100%);
+
+    width: 100%;
+    height: 28px;
+    box-sizing: border-box;
+
+    border-bottom: 28px solid $theme-color-1;
+    border-left: 48px solid transparent;
+    border-right: 48px solid transparent;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: translate(0, 100%);
+
+    width: 100%;
+    height: 28px;
+    box-sizing: border-box;
+
+    border-top: 28px solid $theme-color-1;
+    border-left: 48px solid transparent;
+    border-right: 48px solid transparent;
+  }
+}

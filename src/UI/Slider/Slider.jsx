@@ -109,9 +109,9 @@ export default class Slider extends React.Component {
         transition: true
       })
 
-      if (upEvent.clientX - prevX > 20) {
+      if (upEvent.clientX - prevX > 50) {
         this.prevFrame()
-      } else if (upEvent.clientX - prevX < -20) {
+      } else if (upEvent.clientX - prevX < -50) {
         this.nextFrame()
       } else {
         this.setState({

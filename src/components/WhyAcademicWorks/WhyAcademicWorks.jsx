@@ -1,10 +1,11 @@
 import React from 'react'
 import SiteSection from '../../UI/SiteSection/SiteSection'
 import FeatureCard from './FeatureCard/FeatureCard'
+import cls from './WhyAcademicWorks.scss'
 
 export default () => (
   <SiteSection title='Why Academics Works' center>
-    <div>
+    <div className={cls.FeatureCardsWrapper}>
       <FeatureCard
         title='Personalize Learning'
         text='Lorem ipsum dolor sit amet, consectetur adipiscing elit morbi hendrerit elit'
