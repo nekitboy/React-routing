@@ -30,6 +30,99 @@ export default class Slider extends React.Component {
     window.setFrame = this.setFrame
   }
 
+  dragHandler = (downEvent) => {
+    downEvent.persist()
+    downEvent.preventDefault()
+    document.body.classList.add(cls.grabbing)
+    let prevX = downEvent.clientX
+    let prevOffset = this.state.offset
+    let nextFrame = false
+    let prevFrame = false
+
+    const pxToPercent = 100 / this.sliderElem.getBoundingClientRect().width
+
+    const movement = async (moveEvent) => {
+      let offsetPx = moveEvent.clientX - prevX
+
+      this.setState({
+        transition: false,
+        offset: prevOffset + offsetPx * pxToPercent
+      })
+
+      if (offsetPx < 0 && !nextFrame) {
+        if ( // If curFrame is l  ast and need to transfer first frame
+          this.state.curFrame === this.state.frames.length - 1 &&
+          this.state.frames[0].offset !== this.state.frames.length * 100
+        ) {
+          this._transferFrames(this.state.frames.slice(0, 1), true)
+          this.setState({})
+        } else if ( // If curFrame is not last and need to reset next frame
+          this.state.curFrame !== this.state.frames.length - 1 &&
+          this.state.frames[this.state.curFrame + 1].offset !== null
+        ) {
+          this._resetFrames(this.state.frames.slice(this.state.curFrame + 1, this.state.curFrame + 2))
+          this.setState({})
+        }
+      } else if (offsetPx > 0 && !prevFrame) {
+        if ( // If curFrame is first and need to transfer last frame
+          this.state.curFrame === 0 &&
+          this.state.frames[this.state.frames.length - 1].offset !== -this.state.frames.length * 100
+        ) {
+          this._transferFrames(this.state.frames.slice(this.state.frames.length - 1))
+          this.setState({})
+        } else if ( // If curFrame is not first and need to reset prev frame
+          this.state.curFrame !== 0 &&
+          this.state.frames[this.state.curFrame - 1].offset !== null
+        ) {
+          this._resetFrames(this.state.frames.slice(this.state.curFrame - 1, this.state.curFrame))
+          this.setState({})
+        }
+      }
+
+      if (-offsetPx * pxToPercent > this.getFrameWidth() && !nextFrame) {
+        nextFrame = true
+
+        await this.nextFrame()
+
+        prevX = moveEvent.clientX
+        prevOffset = this.state.offset
+        nextFrame = false
+      } else if (offsetPx * pxToPercent > this.getFrameWidth() && !prevFrame) {
+        prevFrame = true
+
+        await this.prevFrame()
+
+        prevX = moveEvent.clientX
+        prevOffset = this.state.offset
+        prevFrame = false
+      }
+    }
+
+    document.addEventListener('mousemove', movement)
+
+    const mouseup = (upEvent) => {
+      document.removeEventListener('mousemove', movement)
+      document.removeEventListener('mouseup', mouseup)
+      document.body.classList.remove(cls.grabbing)
+
+      this.setState({
+        transition: true
+      })
+
+      if (upEvent.clientX - prevX > 20) {
+        this.prevFrame()
+      } else if (upEvent.clientX - prevX < -20) {
+        this.nextFrame()
+      } else {
+        this.setState({
+          offset: prevOffset
+        })
+      }
+    }
+
+    document.addEventListener('mouseup', mouseup)
+  }
+
   async componentDidMount () {
     this.props.startSlide && this.setFrame(this.props.startSlide)
     await this.requestAnimationFrameAsync()
@@ -102,10 +195,12 @@ export default class Slider extends React.Component {
         this._resetFrames(this.state.frames.slice(0, frameIndex + this.getItemsOnPage()))
         this._transferFrames(this.state.frames.slice(0, Math.max(0, this.getItemsOnPage() - (this.state.frames.length - frameIndex))), true)
 
+        const additionalOffset = this.state.offset + this.state.curFrame * this.getFrameWidth()
+
         await this.requestAnimationFrameAsync()
         await this.setState({
           transition: false,
-          offset: (this.state.frames.length - this.state.curFrame) * this.getFrameWidth()
+          offset: (this.state.frames.length - this.state.curFrame) * this.getFrameWidth() + additionalOffset
         })
 
         await this.requestAnimationFrameAsync()
@@ -124,10 +219,12 @@ export default class Slider extends React.Component {
         this._transferFrames(this.state.frames.slice(0, this.state.curFrame + this.getItemsOnPage()), true)
         this._resetFrames(this.state.frames.slice(frameIndex, this.state.frames.length))
 
+        const additionalOffset = this.state.offset - this.state.curFrame * this.getFrameWidth()
+
         await this.requestAnimationFrameAsync()
         await this.setState({
           transition: false,
-          offset: -(this.state.frames.length + this.state.curFrame) * this.getFrameWidth()
+          offset: -(this.state.frames.length + this.state.curFrame) * this.getFrameWidth() + additionalOffset
         })
 
         await this.requestAnimationFrameAsync()
@@ -138,18 +235,18 @@ export default class Slider extends React.Component {
       }
     }
 
-    this.setState({
+    await this.setState({
       offset: -frameIndex * this.getFrameWidth(),
       curFrame: frameIndex
     })
   }
 
   nextFrame = async () => {
-    this.setFrame((this.state.curFrame + 1) % this.state.frames.length, 'right')
+    await this.setFrame((this.state.curFrame + 1) % this.state.frames.length, 'right')
   }
 
   prevFrame = async () => {
-    this.setFrame((this.state.frames.length + this.state.curFrame - 1) % this.state.frames.length, 'left')
+    await this.setFrame((this.state.frames.length + this.state.curFrame - 1) % this.state.frames.length, 'left')
   }
 
   createDots = () => {
@@ -182,6 +279,7 @@ export default class Slider extends React.Component {
             transform: `translate(${this.state.offset}%)`
           }}
           className={cls.slideWrap}
+          onMouseDown={this.dragHandler}
         >
           {
             this.state.frames.map(item => Frame(item.item, item.offset, this.getFrameWidth()))

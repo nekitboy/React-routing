@@ -4,9 +4,14 @@
   overflow: hidden;
 }
 
+.grabbing * {
+  cursor: grabbing;
+}
+
 .slideWrap {
   display: flex;
   flex-wrap: nowrap;
+  cursor: grab;
 
   > * {
     flex-shrink: 0;
