@@ -32,10 +32,24 @@ export default class Slider extends React.Component {
   }
 
   dragHandler = (downEvent) => {
+    if (this.slidesInterval) {
+      clearInterval(this.slidesInterval)
+    }
+    console.log(downEvent)
+
     downEvent.persist()
-    downEvent.preventDefault()
+    let moveEventType = 'mousemove'
+    let upEventType = 'mouseup'
+
+    if (downEvent.type === 'touchstart') {
+      moveEventType = 'touchmove'
+      upEventType = 'touchend'
+    } else {
+      // downEvent.preventDefault()
+    }
+
     document.body.classList.add(cls.grabbing)
-    let prevX = downEvent.clientX
+    let prevX = downEvent.clientX || downEvent.touches[0].clientX
     let prevOffset = this.state.offset
     let nextFrame = false
     let prevFrame = false
@@ -43,7 +57,7 @@ export default class Slider extends React.Component {
     const pxToPercent = 100 / this.sliderElem.getBoundingClientRect().width
 
     const movement = async (moveEvent) => {
-      let offsetPx = moveEvent.clientX - prevX
+      let offsetPx = (moveEvent.clientX || moveEvent.touches[0].clientX) - prevX
 
       this.setState({
         transition: false,
@@ -85,7 +99,7 @@ export default class Slider extends React.Component {
 
         await this.nextFrame()
 
-        prevX = moveEvent.clientX
+        prevX = moveEvent.clientX || moveEvent.touches[0].clientX
         prevOffset = this.state.offset
         nextFrame = false
       } else if (offsetPx * pxToPercent > this.getFrameWidth() && !prevFrame) {
@@ -93,26 +107,34 @@ export default class Slider extends React.Component {
 
         await this.prevFrame()
 
-        prevX = moveEvent.clientX
+        prevX = moveEvent.clientX || moveEvent.touches[0].clientX
         prevOffset = this.state.offset
         prevFrame = false
       }
     }
 
-    document.addEventListener('mousemove', movement)
+    document.addEventListener(moveEventType, movement)
 
     const mouseup = (upEvent) => {
-      document.removeEventListener('mousemove', movement)
-      document.removeEventListener('mouseup', mouseup)
+      document.removeEventListener(moveEventType, movement)
+      document.removeEventListener(upEventType, mouseup)
       document.body.classList.remove(cls.grabbing)
+
+      if (this.props.slidesDelay) {
+        console.log(this.props.slidesDelay)
+        this.slidesInterval = setInterval(this.nextFrame, this.props.slidesDelay)
+        console.log(this.slidesInterval)
+      }
 
       this.setState({
         transition: true
       })
 
-      if (upEvent.clientX - prevX > 50) {
+      console.log(upEvent)
+
+      if ((upEvent.clientX || upEvent.changedTouches[0].clientX) - prevX > 50) {
         this.prevFrame()
-      } else if (upEvent.clientX - prevX < -50) {
+      } else if ((upEvent.clientX || upEvent.changedTouches[0].clientX) - prevX < -50) {
         this.nextFrame()
       } else {
         this.setState({
@@ -121,7 +143,7 @@ export default class Slider extends React.Component {
       }
     }
 
-    document.addEventListener('mouseup', mouseup)
+    document.addEventListener(upEventType, mouseup)
   }
 
   async componentDidMount () {
@@ -291,6 +313,7 @@ export default class Slider extends React.Component {
           }}
           className={cls.slideWrap}
           onMouseDown={this.dragHandler}
+          onTouchStart={this.dragHandler}
         >
           {
             this.state.frames.map(item => Frame(item.item, item.offset, this.getFrameWidth()))
