@@ -159,6 +159,15 @@ export default class Slider extends React.Component {
     }
   }
 
+  async componentDidUpdate (prevProps, prevState, snapshot) {
+    if (prevProps.itemsOnPage !== this.props.itemsOnPage) {
+      this.setState({ transition: false })
+      this.setFrame(this.state.curFrame, null, true)
+      await this.requestAnimationFrameAsync()
+      this.setState({ transition: true })
+    }
+  }
+
   componentWillUnmount () {
     if (this.slidesInterval) {
       clearInterval(this.slidesInterval)
@@ -205,8 +214,8 @@ export default class Slider extends React.Component {
     })
   }
 
-  setFrame = async (frameIndex, direction) => {
-    if (frameIndex === this.state.curFrame || frameIndex >= this.state.frames.length) {
+  setFrame = async (frameIndex, direction, important) => {
+    if ((frameIndex === this.state.curFrame && !important) || frameIndex >= this.state.frames.length) {
       return
     }
 
@@ -223,7 +232,7 @@ export default class Slider extends React.Component {
     }
 
     if (direction === 'right') {
-      if (frameIndex > this.state.curFrame) {
+      if (frameIndex >= this.state.curFrame) {
         this._resetFrames(this.state.frames.slice(this.state.curFrame, frameIndex + this.getItemsOnPage()))
         this._transferFrames(this.state.frames.slice(0, Math.max(0, this.getItemsOnPage() - (this.state.frames.length - frameIndex))), true)
       } else {
@@ -245,7 +254,7 @@ export default class Slider extends React.Component {
         })
       }
     } else { // left
-      if (frameIndex < this.state.curFrame) {
+      if (frameIndex <= this.state.curFrame) {
         this._resetFrames(this.state.frames.slice(frameIndex, this.state.curFrame + this.getItemsOnPage()))
         this._transferFrames(
           this.state.frames.slice(0, Math.max(0, frameIndex - this.state.frames.length + this.getItemsOnPage())),
@@ -271,7 +280,7 @@ export default class Slider extends React.Component {
       }
     }
 
-    await this.setState({
+    this.setState({
       offset: -frameIndex * this.getFrameWidth(),
       curFrame: frameIndex
     })

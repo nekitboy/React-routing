@@ -1,9 +1,20 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Slider from './Slider'
 import sizeChangeEventEmittable from '../../utils/changeSize'
 
-const changeSizeHandler = (e) => {
-  console.log(e)
+const changeSizeHandler = (setter, breakpoints) => (e) => {
+  const newItemsOnPage = determineItemsOnPage(breakpoints, e.detail.width)
+  setter(newItemsOnPage)
+}
+
+function determineItemsOnPage (breakpoints, width) {
+  if (!breakpoints) {
+    return 1
+  }
+  if (typeof width === 'number') {
+    return breakpoints[Math.max(...Object.keys(breakpoints).filter(b => b < width))]
+  }
+  return Math.min(...Object.values(breakpoints))
 }
 
 /*
@@ -11,14 +22,20 @@ const changeSizeHandler = (e) => {
  */
 const AdaptiveSlider = ({ breakpoints, ...props }) => {
   const sliderElem = useRef(null)
+  const [itemsOnPage, setItemsOnPage] = useState(determineItemsOnPage(breakpoints))
   useEffect(() => {
     sizeChangeEventEmittable(sliderElem.current, 1000)
-    sliderElem.current.addEventListener('sizechange', changeSizeHandler)
+    setItemsOnPage(determineItemsOnPage(breakpoints, sliderElem.current.getBoundingClientRect().width))
+    sliderElem.current.addEventListener(
+      'sizechange',
+      changeSizeHandler((value) => setItemsOnPage(value), breakpoints)
+    )
   }, [])
   return (
     <Slider
-      useRef={(ref) => { sliderElem.current = ref }}
       {...props}
+      useRef={(ref) => { sliderElem.current = ref }}
+      itemsOnPage={itemsOnPage}
     />
   )
 }
