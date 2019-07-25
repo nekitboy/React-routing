@@ -1,3 +1,5 @@
+@import "../../variables";
+
 .Slider {
   width: 100%;
   position: relative;
@@ -52,6 +54,24 @@
   left: 50%;
   bottom: 30px;
   transform: translate(-50%);
+
+  &.outsideDots {
+    position: static;
+    text-align: center;
+    margin: 10px auto;
+    transform: none;
+
+    span {
+      &:before {
+        background-color: rgba(0,0,0,.2);
+      }
+      &.active {
+        &:before {
+          background-color: $theme-color-1;
+        }
+      }
+    }
+  }
 
   span {
     cursor: pointer;

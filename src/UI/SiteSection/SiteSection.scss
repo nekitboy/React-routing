@@ -18,9 +18,14 @@
   font-weight: 500;
   line-height: 1.2;
 
-  margin: 0 0 3rem;
+  margin-bottom: 3rem;
 
   border-bottom: 4px solid $theme-color-1;
+}
+
+.text {
+  margin-top: -2rem;
+  margin-bottom: 4rem;
 }
 
 .center {

@@ -9,7 +9,7 @@ export default class Slider extends React.Component {
    * @param items {List}
    * @param className {string}
    * @param startSlide {Number | null}
-   * @param withDots {bool}
+   * @param dots {string | bool} ("inside" === true | "outside" | false)
    * @param slidesDelay {msc}
    */
 
@@ -337,8 +337,8 @@ export default class Slider extends React.Component {
           <div onClick={this.nextFrame}><Icon icon='arrow_forward'/></div>
         </div>
         {
-          this.props.withDots
-            ? <div className={cls.dots}>
+          this.props.dots === true || ['inside', 'outside'].includes(this.props.dots)
+            ? <div className={mergeClasses(cls.dots, this.props.dots === 'outside' && cls.outsideDots)}>
               {this.createDots()}
             </div>
             : null
