@@ -307,6 +307,7 @@ export default class Slider extends React.Component {
         className={cls.Slider}
         ref={(ref) => {
           this.sliderElem = ref
+          this.props.useRef && this.props.useRef(ref)
         }}
       >
         <div

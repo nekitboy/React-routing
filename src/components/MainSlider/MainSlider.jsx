@@ -1,5 +1,5 @@
 import React from 'react'
-import Slider from '../../UI/Slider/Slider'
+import Slider from '../../UI/Slider/AdaptiveSlider'
 import Slide from './Slide/Slide'
 
 import bgImg from '../../../assets/images/hero_1.jpg'
