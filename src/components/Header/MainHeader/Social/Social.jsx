@@ -1,7 +1,7 @@
 import React from 'react'
 import cls from './Socials.scss'
-import Icon from '../../../../../UI/Icon/Icon'
-import mergeClasses from '../../../../../utils/mergeClasses'
+import Icon from '../../../../UI/Icon/Icon'
+import mergeClasses from '../../../../utils/mergeClasses'
 
 export default ({ toggleMenu }) => (
   <div className={cls.socials}>

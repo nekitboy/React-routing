@@ -1,9 +1,9 @@
 import React from 'react'
 import cls from './HeaderActions.scss'
 import Action from './Action/Action'
-import Icon from '../../../../UI/Icon/Icon'
-import mergeClasses from '../../../../utils/mergeClasses'
-import LinkButton from '../../../../UI/Button/LinkButton'
+import Icon from '../../../UI/Icon/Icon'
+import mergeClasses from '../../../utils/mergeClasses'
+import LinkButton from '../../../UI/Button/LinkButton'
 
 export default () => (
   <div className={cls.headerActions}>

@@ -1,5 +1,5 @@
 import React from 'react'
-import TextIcon from '../../../../../UI/Icon/TextIcon'
+import TextIcon from '../../../../UI/Icon/TextIcon'
 import cls from './Action.scss'
 
 export default ({ icon, text, link }) => (

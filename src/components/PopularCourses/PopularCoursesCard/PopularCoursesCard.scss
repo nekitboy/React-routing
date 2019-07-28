@@ -1,0 +1,62 @@
+@import '../../../variables';
+
+.Card {
+  position: relative;
+  user-select: none;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+
+  > a {
+    display: block;
+
+    > img {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  > h2 {
+    color: #fff;
+    font-size: 20px;
+    margin: 0;
+    padding: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    background-color: $theme-color-1;
+  }
+}
+
+.price {
+  position: absolute;
+  right: 0;
+  padding: 10px 20px;
+  background: #183661;
+  color: #fff;
+  transform: translateY(-40px);
+}
+
+.content {
+  margin-top: 16px;
+  padding: 20px 40px;
+  text-align: center;
+
+  > h3 {
+    margin: 0 0 30px 0;
+    font-size: 18px;
+    color: #000;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  > p {
+    font-size: 15px;
+    margin-bottom: 1.5rem;
+  }
+
+  > a {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.iconWrapper {
+  color: rgb(248, 157, 19);
+}

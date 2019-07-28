@@ -51,7 +51,9 @@ module.exports = (env, argv) => {
       contentBase: path.resolve(process.cwd(), outputDirectory),
       overlay: true,
       open: 'Chrome',
-      port: 9000
+      port: 9000,
+      public: 'localhost:9000',
+      host: '0.0.0.0'
     },
     devtool: 'eval-source-map',
     module: {

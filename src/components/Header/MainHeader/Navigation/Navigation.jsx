@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import cls from './Navigation.scss'
-import { mainMenuLinks } from '../../../../../data/navigation'
-import Icon from '../../../../../UI/Icon/Icon'
-import mergeClasses from '../../../../../utils/mergeClasses'
+import { mainMenuLinks } from '../../../../data/navigation'
+import Icon from '../../../../UI/Icon/Icon'
+import mergeClasses from '../../../../utils/mergeClasses'
 
 export default ({ isMenuOpen, closeMenu, innerRef }) => {
   const [isItemsOpened, setItemsOpen] = useState(mainMenuLinks.map(() => false))

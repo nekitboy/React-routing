@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import Header from './Header/Header'
+import Header from '../../components/Header/Header'
 import './BaseLayout.scss'
 
 const BaseLayout = (props) => {

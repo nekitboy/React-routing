@@ -1,10 +1,10 @@
 import React from 'react'
 import cls from './MainHeader.scss'
-import mergeClasses from '../../../../utils/mergeClasses'
+import mergeClasses from '../../../utils/mergeClasses'
 import Navigation from './Navigation/Navigation'
 import Social from './Social/Social'
-import { stickElement } from '../../../../utils/sticky'
-import { timeoutThrottle } from '../../../../utils/throttle'
+import { stickElement } from '../../../utils/sticky'
+import { timeoutThrottle } from '../../../utils/throttle'
 
 export default class MainHeader extends React.Component {
   state = {
@@ -68,7 +68,7 @@ export default class MainHeader extends React.Component {
       >
         <div className={mergeClasses('container', cls.header)}>
           <a href="/" className={cls.logo}>
-            <img src={require('../../../../../assets/images/logo.jpg')} alt=""/>
+            <img src={require('../../../../assets/images/logo.jpg')} alt=""/>
           </a>
           <Navigation
             isMenuOpen={this.state.isMenuOpen}

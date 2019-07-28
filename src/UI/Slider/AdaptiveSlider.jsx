@@ -12,7 +12,7 @@ function determineItemsOnPage (breakpoints, width) {
     return 1
   }
   if (typeof width === 'number') {
-    return breakpoints[Math.max(...Object.keys(breakpoints).filter(b => b < width))]
+    return breakpoints[Math.max(...Object.keys(breakpoints).filter(b => b <= width))]
   }
   return Math.min(...Object.values(breakpoints))
 }

@@ -4,6 +4,7 @@
   width: 100%;
   position: relative;
   overflow: hidden;
+  cursor: grab;
 }
 
 .grabbing * {
@@ -58,7 +59,7 @@
   &.outsideDots {
     position: static;
     text-align: center;
-    margin: 10px auto;
+    margin: 30px auto;
     transform: none;
 
     span {

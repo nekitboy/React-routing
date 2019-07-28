@@ -10,6 +10,7 @@ export default class Slider extends React.Component {
    * @param className {string}
    * @param startSlide {Number | null}
    * @param dots {string | bool} ("inside" === true | "outside" | false)
+   * @param margin {string} - margin between frames
    * @param slidesDelay {msc}
    */
 
@@ -18,17 +19,15 @@ export default class Slider extends React.Component {
 
     this.state = {
       curFrame: 0,
-      frames: props.items.map(item => ({ item, offset: '0' })),
+      frames: props.items.map(item => ({ item, offset: null })),
       transition: props.firstTransition,
       offset: 0
     }
     while (this.state.frames.length < this.getItemsOnPage()) {
-      this.state.frames.push({ item: <div key={'emptyFrame' + this.state.frames.length}/>, offset: 0 })
+      this.state.frames.push({ item: <div key={'emptyFrame' + this.state.frames.length}/>, offset: null })
     }
 
     this.setFrame(this.state.curFrame)
-
-    window.setFrame = this.setFrame
   }
 
   dragHandler = (downEvent) => {
@@ -48,7 +47,7 @@ export default class Slider extends React.Component {
     }
 
     document.body.classList.add(cls.grabbing)
-    let prevX = downEvent.clientX || downEvent.touches[0].clientX
+    let prevX = downEvent.clientX != null ? downEvent.clientX : downEvent.touches[0].clientX
     let prevOffset = this.state.offset
     let nextFrame = false
     let prevFrame = false
@@ -56,48 +55,51 @@ export default class Slider extends React.Component {
     const pxToPercent = 100 / this.sliderElem.getBoundingClientRect().width
 
     const movement = async (moveEvent) => {
-      let offsetPx = (moveEvent.clientX || moveEvent.touches[0].clientX) - prevX
+      moveEvent.preventDefault()
 
-      this.setState({
-        transition: false,
-        offset: prevOffset + offsetPx * pxToPercent
-      })
+      let offsetPx = (moveEvent.clientX != null ? moveEvent.clientX : moveEvent.touches[0].clientX) - prevX
 
-      if (offsetPx < 0 && !nextFrame) {
-        if ( // If curFrame is on last page and need to transfer first frame
-          this.state.curFrame + this.getItemsOnPage() >= this.state.frames.length &&
-          this.state.frames[this.getItemsOnPage() - this.state.frames.length + this.state.curFrame].offset !==
-          this.state.frames.length * 100
-        ) {
-          console.log('Transfer right')
-          this._transferFrames(this.state.frames.slice(
-            this.getItemsOnPage() - this.state.frames.length + this.state.curFrame,
-            this.getItemsOnPage() - this.state.frames.length + this.state.curFrame + 1
-          ), true)
-          this.setState({})
-        } else if ( // If curFrame is not last and need to reset next frame
-          this.state.curFrame + this.getItemsOnPage() < this.state.frames.length &&
-          this.state.frames[this.state.curFrame + this.getItemsOnPage()].offset !== null
-        ) {
-          this._resetFrames(this.state.frames.slice(
-            this.state.curFrame + this.getItemsOnPage(),
-            this.state.curFrame + 1 + this.getItemsOnPage())
-          )
-          this.setState({})
-        }
-      } else if (offsetPx > 0 && !prevFrame) {
-        if ( // If curFrame is first and need to transfer last frame
-          this.state.curFrame === 0 &&
-          this.state.frames[this.state.frames.length - 1].offset !== -this.state.frames.length * 100
-        ) {
-          this._transferFrames(this.state.frames.slice(this.state.frames.length - 1))
-          this.setState({})
-        } else if ( // If curFrame is not first and need to reset prev frame
-          this.state.curFrame !== 0 &&
-          this.state.frames[this.state.curFrame - 1].offset !== null
-        ) {
-          this._resetFrames(this.state.frames.slice(this.state.curFrame - 1, this.state.curFrame))
-          this.setState({})
+      if (!prevFrame && !nextFrame) {
+        this.setState({
+          transition: false,
+          offset: prevOffset + offsetPx * pxToPercent
+        })
+
+        if (offsetPx < 0) {
+          if ( // If curFrame is on last page and need to transfer first frame
+            this.state.curFrame + this.getItemsOnPage() >= this.state.frames.length &&
+            this.state.frames[this.getItemsOnPage() - this.state.frames.length + this.state.curFrame].offset !==
+            this._calculateTransferOffset()
+          ) {
+            this._transferFrames(this.state.frames.slice(
+              this.getItemsOnPage() - this.state.frames.length + this.state.curFrame,
+              this.getItemsOnPage() - this.state.frames.length + this.state.curFrame + 1
+            ), true)
+            this.setState({})
+          } else if ( // If curFrame is not last and need to reset next frame
+            this.state.curFrame + this.getItemsOnPage() < this.state.frames.length &&
+            this.state.frames[this.state.curFrame + this.getItemsOnPage()].offset !== null
+          ) {
+            this._resetFrames(this.state.frames.slice(
+              this.state.curFrame + this.getItemsOnPage(),
+              this.state.curFrame + 1 + this.getItemsOnPage())
+            )
+            this.setState({})
+          }
+        } else if (offsetPx > 0) {
+          if ( // If curFrame is first and need to transfer last frame
+            this.state.curFrame === 0 &&
+            this.state.frames[this.state.frames.length - 1].offset !== this._calculateTransferOffset()
+          ) {
+            this._transferFrames(this.state.frames.slice(this.state.frames.length - 1))
+            this.setState({})
+          } else if ( // If curFrame is not first and need to reset prev frame
+            this.state.curFrame !== 0 &&
+            this.state.frames[this.state.curFrame - 1].offset !== null
+          ) {
+            this._resetFrames(this.state.frames.slice(this.state.curFrame - 1, this.state.curFrame))
+            this.setState({})
+          }
         }
       }
 
@@ -106,7 +108,7 @@ export default class Slider extends React.Component {
 
         await this.nextFrame()
 
-        prevX = moveEvent.clientX || moveEvent.touches[0].clientX
+        prevX = moveEvent.clientX != null ? moveEvent.clientX : moveEvent.touches[0].clientX
         prevOffset = this.state.offset
         nextFrame = false
       } else if (offsetPx * pxToPercent > this.getFrameWidth() && !prevFrame) {
@@ -114,7 +116,7 @@ export default class Slider extends React.Component {
 
         await this.prevFrame()
 
-        prevX = moveEvent.clientX || moveEvent.touches[0].clientX
+        prevX = moveEvent.clientX != null ? moveEvent.clientX : moveEvent.touches[0].clientX
         prevOffset = this.state.offset
         prevFrame = false
       }
@@ -131,18 +133,19 @@ export default class Slider extends React.Component {
         this.slidesInterval = setInterval(this.nextFrame, this.props.slidesDelay)
       }
 
-      this.setState({
-        transition: true
-      })
-
-      if ((upEvent.clientX || upEvent.changedTouches[0].clientX) - prevX > 50) {
-        this.prevFrame()
-      } else if ((upEvent.clientX || upEvent.changedTouches[0].clientX) - prevX < -50) {
-        this.nextFrame()
-      } else {
+      if (!prevFrame && !nextFrame) {
         this.setState({
-          offset: prevOffset
+          transition: true
         })
+        if ((upEvent.clientX != null ? upEvent.clientX : upEvent.changedTouches[0].clientX) - prevX > 50) {
+          this.prevFrame()
+        } else if ((upEvent.clientX != null ? upEvent.clientX : upEvent.changedTouches[0].clientX) - prevX < -50) {
+          this.nextFrame()
+        } else {
+          this.setState({
+            offset: prevOffset
+          })
+        }
       }
     }
 
@@ -208,9 +211,13 @@ export default class Slider extends React.Component {
     })
   }
 
+  _calculateTransferOffset (right = false) {
+    return `calc((100%${this.props.margin ? ` + ${this.props.margin}` : ''}) * ${right ? '' : '-'}${this.state.frames.length})`
+  }
+
   _transferFrames (frames, right = false) {
     frames.forEach(frame => {
-      frame.offset = this.state.frames.length * 100 * (right ? 1 : -1)
+      frame.offset = this._calculateTransferOffset(right) // this.state.frames.length * 100 * (right ? 1 : -1)
     })
   }
 
@@ -274,13 +281,13 @@ export default class Slider extends React.Component {
 
         await this.requestAnimationFrameAsync()
 
-        this.setState({
+        await this.setState({
           transition: true
         })
       }
     }
 
-    this.setState({
+    await this.setState({
       offset: -frameIndex * this.getFrameWidth(),
       curFrame: frameIndex
     })
@@ -318,6 +325,8 @@ export default class Slider extends React.Component {
           this.sliderElem = ref
           this.props.useRef && this.props.useRef(ref)
         }}
+        onMouseDown={this.dragHandler}
+        onTouchStart={this.dragHandler}
       >
         <div
           style={{
@@ -325,11 +334,9 @@ export default class Slider extends React.Component {
             transform: `translate(${this.state.offset}%)`
           }}
           className={cls.slideWrap}
-          onMouseDown={this.dragHandler}
-          onTouchStart={this.dragHandler}
         >
           {
-            this.state.frames.map(item => Frame(item.item, item.offset, this.getFrameWidth()))
+            this.state.frames.map(item => Frame(item.item, item.offset, this.getFrameWidth(), this.props.margin))
           }
         </div>
         <div className={cls.Navigation}>
@@ -348,9 +355,13 @@ export default class Slider extends React.Component {
   }
 }
 
-const Frame = (item, offset, width, metric = '%') => React.cloneElement(item, {
-  style: {
-    transform: offset ? `translateX(${offset}${metric}` : null,
-    width: `${width}${metric}`
-  }
-})
+const Frame = (item, offset, width, margin, metric = '%') => {
+  return React.cloneElement(item, {
+    style: {
+      transform: offset ? `translate3d(${offset}, 0, 0)` : null,
+      width: margin ? `calc(${width}${metric} - ${margin})` : `${width}${metric}`,
+      marginLeft: margin ? `calc(${margin} / 2)` : null,
+      marginRight: margin ? `calc(${margin} / 2)` : null
+    }
+  })
+}

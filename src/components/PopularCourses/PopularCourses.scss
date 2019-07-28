@@ -1,0 +1,11 @@
+@import '../../variables';
+
+.section {
+  padding-top: 2.5em;
+  padding-bottom: 0;
+
+  @media (min-width: $breakpoint-md) {
+    padding-top: 5em;
+    padding-bottom: 1.5em;
+  }
+}
