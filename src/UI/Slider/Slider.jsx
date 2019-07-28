@@ -12,6 +12,7 @@ export default class Slider extends React.Component {
    * @param dots {string | bool} ("inside" === true | "outside" | false)
    * @param margin {string} - margin between frames
    * @param slidesDelay {msc}
+   * @param controls {bool}
    */
 
   constructor (props) {
@@ -42,8 +43,6 @@ export default class Slider extends React.Component {
     if (downEvent.type === 'touchstart') {
       moveEventType = 'touchmove'
       upEventType = 'touchend'
-    } else {
-      // downEvent.preventDefault()
     }
 
     document.body.classList.add(cls.grabbing)
@@ -55,7 +54,9 @@ export default class Slider extends React.Component {
     const pxToPercent = 100 / this.sliderElem.getBoundingClientRect().width
 
     const movement = async (moveEvent) => {
-      moveEvent.preventDefault()
+      if (moveEventType === 'mousemove') {
+        moveEvent.preventDefault()
+      }
 
       let offsetPx = (moveEvent.clientX != null ? moveEvent.clientX : moveEvent.touches[0].clientX) - prevX
 
@@ -320,7 +321,7 @@ export default class Slider extends React.Component {
   render () {
     return (
       <div
-        className={cls.Slider}
+        className={mergeClasses(cls.Slider, this.props.className)}
         ref={(ref) => {
           this.sliderElem = ref
           this.props.useRef && this.props.useRef(ref)
@@ -339,10 +340,12 @@ export default class Slider extends React.Component {
             this.state.frames.map(item => Frame(item.item, item.offset, this.getFrameWidth(), this.props.margin))
           }
         </div>
-        <div className={cls.Navigation}>
-          <div onClick={this.prevFrame}><Icon icon='arrow_back'/></div>
-          <div onClick={this.nextFrame}><Icon icon='arrow_forward'/></div>
-        </div>
+        {
+          this.props.controls && <div className={cls.Navigation}>
+            <div onClick={this.prevFrame}><Icon icon='arrow_back'/></div>
+            <div onClick={this.nextFrame}><Icon icon='arrow_forward'/></div>
+          </div>
+        }
         {
           this.props.dots === true || ['inside', 'outside'].includes(this.props.dots)
             ? <div className={mergeClasses(cls.dots, this.props.dots === 'outside' && cls.outsideDots)}>

@@ -73,6 +73,7 @@ const PopularCourses = () => (
       breakpoints={{ 0: 1, 510: 2, 1110: 3 }}
       margin='30px'
       dots='outside'
+      controls
       items={ items.map(item => <PopularCoursesCard {...item} />) }
     />
   </SiteSection>

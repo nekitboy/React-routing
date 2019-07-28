@@ -1,11 +1,10 @@
 import React from 'react'
 import cls from './AboutOurUniversity.scss'
-import SiteSection from '../../UI/SiteSection/SiteSection'
+import SiteSectionWithBg from '../../UI/SiteSection/SiteSectionWithBg/SiteSectionWithBg'
 
-const AboutOurUniersity = () => {
+const AboutOurUniversity = () => {
   return (
-    <div className={cls.wrapper}>
-      <SiteSection title='About Our University' className={cls.section} leftside>
+      <SiteSectionWithBg title='About Our University' className={cls.section} leftside>
         <p>
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rem nesciunt quaerat ad reiciendis perferendis
           voluptate fugiat sunt fuga error totam.
@@ -18,9 +17,8 @@ const AboutOurUniersity = () => {
           officiis debitis quas beatae aliquam?
         </p>
         <a href="#" className={cls.link}>Read more</a>
-      </SiteSection>
-    </div>
+      </SiteSectionWithBg>
   )
 }
 
-export default AboutOurUniersity
+export default AboutOurUniversity

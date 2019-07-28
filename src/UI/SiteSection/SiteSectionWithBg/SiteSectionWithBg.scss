@@ -1,0 +1,32 @@
+.wrapper {
+  position: relative;
+  background-position: center;
+  background-size: cover;
+}
+
+.section {
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  color: #7697c6;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+
+  > div > h2 {
+    color: #fff;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #183661;
+    opacity: .9;
+    z-index: 0;
+  }
+}
