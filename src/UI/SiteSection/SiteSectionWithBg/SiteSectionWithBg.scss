@@ -11,8 +11,11 @@
   }
 
   color: #7697c6;
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+
+  &.smallPadding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
 
   > div > h2 {
     color: #fff;
