@@ -6,6 +6,7 @@ import AboutOurUniversity from '../../components/AboutOurUniversity/AboutOurUniv
 import Testimonials from '../../components/Testimonials/Testimonials'
 import Features from '../../components/Features/Features'
 import SubscribeToUs from '../../components/SubscribeToUs/SubscribeToUs'
+import NewsAndUpdates from '../../components/NewsAndUpdates/NewsAndUpdates'
 
 export default () => (
   <React.Fragment>
@@ -15,6 +16,7 @@ export default () => (
     <AboutOurUniversity/>
     <Testimonials/>
     <Features/>
+    <NewsAndUpdates/>
     <SubscribeToUs/>
   </React.Fragment>
 )
